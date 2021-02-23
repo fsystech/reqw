@@ -8,83 +8,47 @@
 // On 12:25 PM 12/25/2020
 import { ServerResponse } from 'http';
 import { ReadStream, WriteStream } from 'fs';
-export interface ICPdfConfig {
-    /** Full url e.g. https://www.safeonline.world */
-    from_url?: string;
-    /** should be absolute path */
-    out_path?: string;
-    /** Absolute local file path */
-    from_path?: string;
-    global_settings?: {
-        documentTitle?: string;
-        size?: { paperSize?: string };
-        orientation?: string;
-        colorMode?: string;
-        dpi?: number;
-        imageDPI?: number;
-        imageQuality?: number;
-        margin?: {
-            top?: string;
-            bottom?: string;
-            left?: string;
-            right?: string;
-        }
-    };
-    object_settings?: {
-        web?: {
-            defaultEncoding?: string;
-            background?: boolean;
-            loadImages?: boolean;
-            enablePlugins?: boolean;
-            enableJavascript?: boolean;
-            enableIntelligentShrinking?: boolean;
-            minimumFontSize?: number;
-            printMediaType?: boolean;
-        };
-        header?: {
-            fontSize?: number;
-            /** e.g. `Times New Roman` */
-            fontName?: string;
-            /** e.g. `[date]` */
-            left?: string;
-            line?: boolean;
-            spacing?: number;
-        };
-        footer?: {
-            fontSize?: number;
-            /** e.g. `Page [page] of [topage]` */
-            right?: string;
-            line?: boolean;
-            spacing?: number;
-        };
-    };
+export interface IHttpConfig {
+    is_debug?: boolean;
+    is_verify_ssl?: boolean;
+    is_verify_ssl_host?: boolean;
 }
-export interface html2pdf_native {
-    generate_pdf(...args: any[]): any;
-    get_http_header(): NodeJS.Dict<string>;
-    destroy_app(): void;
+export interface INativeResult { ret_val: number; ret_msg: string; response_body?: string; response_header?: string }
+export interface reqw_native {
+    create_http_request(...args: any[]): INativeResult;
+    create_smtp_request(...args: any[]): INativeResult;
+    create_http_download_request(...args: any[]): INativeResult;
 }
-export interface ICpdfy {
-    setHeader<T extends ServerResponse>(res: T): void;
-    getHttpHeader(): NodeJS.Dict<string>;
-    createStream<T extends ServerResponse>(res: T, config: ICPdfConfig, htmlStr: string, next?: (err?: Error) => void): void;
-    createStream<T extends ServerResponse>(res: T, config: ICPdfConfig, next?: (err?: Error) => void): void;
-    createStream<T extends ServerResponse>(res: T, htmlStr: string, next?: (err?: Error) => void): void;
-    createStream(outStream: WriteStream, config: ICPdfConfig, htmlStr: string, next?: (err?: Error) => void): void;
-    createStream(outStream: WriteStream, config: ICPdfConfig, next?: (err?: Error) => void): void;
-    createStream(outStream: WriteStream, htmlStr: string, next?: (err?: Error) => void): void;
-    createStream(config: ICPdfConfig, htmlStr: string, next: (err: Error, stream: ReadStream) => void): void;
-    createStream(config: ICPdfConfig, next: (err: Error, stream: ReadStream) => void): void;
-    createStream(htmlStr: string, next: (err: Error, stream: ReadStream) => void): void;
-    createStreamAsync(config: ICPdfConfig, htmlStr: string): Promise<ReadStream>;
-    createStreamAsync(htmlStr: string): Promise<ReadStream>;
-    createStreamAsync(config: ICPdfConfig): Promise<ReadStream>;
-    generatePdf(config: ICPdfConfig, htmlStr: string): Buffer | void;
-    generatePdf(config: ICPdfConfig): Buffer | void;
-    generatePdf(htmlStr: string): Buffer;
-    generatePdfAsync(config: ICPdfConfig, htmlStr: string): Promise<Buffer>;
-    generatePdfAsync(htmlStr: string): Promise<Buffer>;
-    generatePdfAsync(config: ICPdfConfig): Promise<Buffer | void>;
-    destroyApp(): void;
+interface IHttpResponse {
+    readonly http_status_code: number;
+    readonly cookie: string[];
+    readonly header: NodeJS.Dict<string>;
+    readonly body: string;
+    readonly is_error: boolean;
+    readonly error?: string;
 }
-declare var Cpdfy: ICpdfy;
+export interface IHttpRequest {
+    readonly response: IHttpResponse;
+    setUrl(url: string): IHttpRequest;
+    getTimeStamp(day?: number): string;
+    existsCookie(cook: string): boolean;
+    setRawCookie(cook: string): IHttpRequest;
+    setCookie(key: string, value: string): IHttpRequest
+    removeHeader(key: string): IHttpRequest;
+    setHeader(key: string, value: string): IHttpRequest;
+    getAsync(follow_location?: boolean): Promise<void>;
+    postAsync(body: string, follow_location?: boolean): Promise<void>;
+    sendAsync(body: string, follow_location?: boolean): Promise<void>;
+    get(follow_location?: boolean): IHttpRequest;
+    post(body: string, follow_location?: boolean): IHttpRequest;
+    send(body: string, follow_location?: boolean): IHttpRequest;
+    moveToRequest(withHeader?: boolean): IHttpRequest;
+    clearResponse(): IHttpRequest;
+}
+export interface HttpRequestConstructor {
+    new(url: string, opt: IHttpConfig): IHttpRequest;
+    new(url: string): IHttpRequest;
+    new(): IHttpRequest;
+    readonly prototype: IHttpRequest;
+}
+declare var HttpRequest: HttpRequestConstructor;
