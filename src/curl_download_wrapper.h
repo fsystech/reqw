@@ -11,5 +11,5 @@
 #if !defined(_curl_download_wrapper_h)
 #	define _curl_download_wrapper_h
 #	include <v8.h>
-void http_download_export(v8::Isolate* isolate, v8::Handle<v8::Object> target);
+void http_download_request(const v8::FunctionCallbackInfo<v8::Value> &args);
 #endif//!_curl_download_wrapper_h

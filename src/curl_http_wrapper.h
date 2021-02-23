@@ -11,6 +11,5 @@
 #if !defined(_curl_http_wrapper_h)
 #	define _curl_http_wrapper_h
 #	include <v8.h>
-void http_export(v8::Isolate* isolate, v8::Handle<v8::Object> target);
-void on_resource_free();
+void http_request(const v8::FunctionCallbackInfo<v8::Value> &args);
 #endif//!_curl_http_wrapper_h

@@ -58,7 +58,14 @@
         "mutex": "cpp",
         "queue": "cpp",
         "sstream": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "ctime": "cpp",
+        "locale": "cpp",
+        "regex": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp"
     },
     "files.watcherExclude": {
         "**/target": true

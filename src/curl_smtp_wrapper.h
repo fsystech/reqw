@@ -11,5 +11,5 @@
 #if !defined(_curl_smtp_wrapper_h)
 #	define _curl_smtp_wrapper_h
 #	include <v8.h>
-void smtp_export(v8::Isolate* isolate, v8::Handle<v8::Object> target);
+void smtp_request(const v8::FunctionCallbackInfo<v8::Value> &args);
 #endif//!_image_win_h

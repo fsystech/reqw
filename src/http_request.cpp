@@ -14,41 +14,41 @@
 #	include "default.h"
 
 using namespace http_client;
-http_request::http_request(const char * full_url, bool follow_location = false) {
+http_request::http_request( const char *full_url, bool follow_location = false ) {
 	_disposed = false;
-	_curl = curl_easy_init();
+	_curl = curl_easy_init( );
 	_header_chunk = NULL;
 	_full_url = full_url;
 	_follow_location = follow_location;
 	_internal_error = NULL;
 }
-void http_request::set_error(const char * error) {
-	_free_char(_internal_error);
-	size_t len = strlen(error);
+void http_request::set_error( const char *error ) {
+	_free_char( _internal_error );
+	size_t len = strlen( error );
 	_internal_error = new char[len + 1];
-	strcpy_s(_internal_error, len, error);
+	strcpy_s( _internal_error, len, error );
 }
-size_t write_callback(char *contents, size_t size, size_t nmemb, void *userp) {
-	((std::string*)userp)->append((char*)contents, size * nmemb);
+size_t write_callback( char *contents, size_t size, size_t nmemb, void *userp ) {
+	(( std::string * )userp)->append( ( char * )contents, size * nmemb );
 	return size * nmemb;
 }
-void http_request::prepare() {
+void http_request::prepare( ) {
 	//CURLcode
-	if (_header_chunk)
-		curl_easy_setopt(_curl, CURLOPT_HTTPHEADER, _header_chunk);
+	if ( _header_chunk )
+		curl_easy_setopt( _curl, CURLOPT_HTTPHEADER, _header_chunk );
 	/*if (_cookie_chunk)
 		curl_easy_setopt(_curl, CURLOPT_COOKIE, _cookie_chunk);*/
-	if (_follow_location == true) {
-		curl_easy_setopt(_curl, CURLOPT_FOLLOWLOCATION, 1L);
+	if ( _follow_location == true ) {
+		curl_easy_setopt( _curl, CURLOPT_FOLLOWLOCATION, 1L );
 	}
-	curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, write_callback);
-	curl_easy_setopt(_curl, CURLOPT_URL, _full_url);
+	curl_easy_setopt( _curl, CURLOPT_WRITEFUNCTION, write_callback );
+	curl_easy_setopt( _curl, CURLOPT_URL, _full_url );
 	/* complete within 20 seconds */
-	curl_easy_setopt(_curl, CURLOPT_TIMEOUT, 120L);
-	curl_easy_setopt(_curl, CURLOPT_HTTP_CONTENT_DECODING, 1L);
-	curl_easy_setopt(_curl, CURLOPT_ACCEPT_ENCODING, "gzip");
+	curl_easy_setopt( _curl, CURLOPT_TIMEOUT, 120L );
+	curl_easy_setopt( _curl, CURLOPT_HTTP_CONTENT_DECODING, 1L );
+	curl_easy_setopt( _curl, CURLOPT_ACCEPT_ENCODING, "gzip" );
 }
-void http_request::verify_ssl(bool verify) {
+void http_request::verify_ssl( bool verify ) {
 	/*
 	* If you want to connect to a site who isn't using a certificate that is
 	* signed by one of the certs in the CA bundle you have, you can skip the
@@ -59,61 +59,61 @@ void http_request::verify_ssl(bool verify) {
 	* default bundle, then the CURLOPT_CAPATH option might come handy for
 	* you.
 	*/
-	curl_easy_setopt(_curl, CURLOPT_SSL_VERIFYPEER, verify);
+	curl_easy_setopt( _curl, CURLOPT_SSL_VERIFYPEER, verify );
 
-	curl_easy_setopt(_curl, CURLOPT_SSL_CTX_FUNCTION, *sow_web_jsx::ssl_ctx_callback);
+	curl_easy_setopt( _curl, CURLOPT_SSL_CTX_FUNCTION, *sow_curl_util::ssl_ctx_callback );
 }
-void http_request::verify_ssl_host(bool verify) {
+void http_request::verify_ssl_host( bool verify ) {
 	/*
 	* If the site you're connecting to uses a different host name that what
 	* they have mentioned in their server certificate's commonName (or
 	* subjectAltName) fields, libcurl will refuse to connect. You can skip
 	* this check, but this will make the connection less secure.
 	*/
-	curl_easy_setopt(_curl, CURLOPT_SSL_VERIFYHOST, verify);
+	curl_easy_setopt( _curl, CURLOPT_SSL_VERIFYHOST, verify );
 }
-void http_request::read_debug_information(bool isDebug) {
+void http_request::read_debug_information( bool isDebug ) {
 	/* ask libcurl to show us the verbose output */
-	curl_easy_setopt(_curl, CURLOPT_VERBOSE, isDebug);
-	if (isDebug == true) {
+	curl_easy_setopt( _curl, CURLOPT_VERBOSE, isDebug );
+	if ( isDebug == true ) {
 		/* if CURLOPT_VERBOSE is enabled then CURLOPT_DEBUGFUNCTION will be work*/
-		curl_easy_setopt(_curl, CURLOPT_DEBUGFUNCTION, sow_web_jsx::debug_log);
+		curl_easy_setopt( _curl, CURLOPT_DEBUGFUNCTION, sow_curl_util::debug_log );
 	}
 }
-int http_request::send_request(std::string & response_header, std::string &response_body) {
-	this->prepare();
-	curl_easy_setopt(_curl, CURLOPT_HEADERDATA, &response_header);
-	curl_easy_setopt(_curl, CURLOPT_WRITEDATA, &response_body);
-	CURLcode res = curl_easy_perform(_curl);
+int http_request::send_request( std::string &response_header, std::string &response_body ) {
+	this->prepare( );
+	curl_easy_setopt( _curl, CURLOPT_HEADERDATA, &response_header );
+	curl_easy_setopt( _curl, CURLOPT_WRITEDATA, &response_body );
+	CURLcode res = curl_easy_perform( _curl );
 	int rec = 0;
-	if (res != CURLE_OK) {
-		this->set_error(curl_easy_strerror(res));
+	if ( res != CURLE_OK ) {
+		this->set_error( curl_easy_strerror( res ) );
 		//fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
 		rec = -1;
 	}
-	curl_easy_cleanup(_curl);
+	curl_easy_cleanup( _curl );
 	return rec;
 }
-http_request::~http_request() {
-	if (_header_chunk != NULL) {
-		curl_slist_free_all(_header_chunk); _header_chunk = NULL;
+http_request::~http_request( ) {
+	if ( _header_chunk != NULL ) {
+		curl_slist_free_all( _header_chunk ); _header_chunk = NULL;
 	}
-	_free_char(_internal_error);
+	_free_char( _internal_error );
 }
-const char * http_request::get_last_error() {
-	return const_cast<const char*>(_internal_error);
+const char *http_request::get_last_error( ) {
+	return const_cast< const char * >(_internal_error);
 }
-void http_request::set_header(const char * header) {
-	_header_chunk = curl_slist_append(_header_chunk, header);
+void http_request::set_header( const char *header ) {
+	_header_chunk = curl_slist_append( _header_chunk, header );
 }
-void http_request::set_cookie(const char * cookie) {
-	curl_easy_setopt(_curl, CURLOPT_COOKIE, cookie);
+void http_request::set_cookie( const char *cookie ) {
+	curl_easy_setopt( _curl, CURLOPT_COOKIE, cookie );
 }
-int http_request::get(std::string & response_header, std::string &response_body) {
-	return this->send_request(response_header, response_body);
+int http_request::get( std::string &response_header, std::string &response_body ) {
+	return this->send_request( response_header, response_body );
 }
-int http_request::post(const char * body, std::string & response_header, std::string &response_body) {
+int http_request::post( const char *body, std::string &response_header, std::string &response_body ) {
 	//curl_easy_setopt(_curl, CURLOPT_POST, 1);
-	curl_easy_setopt(_curl, CURLOPT_POSTFIELDS, body);
-	return this->send_request(response_header, response_body);
+	curl_easy_setopt( _curl, CURLOPT_POSTFIELDS, body );
+	return this->send_request( response_header, response_body );
 }

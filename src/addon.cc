@@ -7,7 +7,9 @@
 // by Rajib chy
 // 6:55 PM 12/12/2020
 #   include "v8_util.h"
-#   include "wj_pdf.h"
+#   include "curl_download_wrapper.h"
+#   include "curl_http_wrapper.h"
+#   include "curl_smtp_wrapper.h"
 
 #define SET_NATIVE_METHOD(app, isolate, method_name, method, external, context) \
     app->Set( context,                                                          \
@@ -28,10 +30,10 @@ void Initialize( v8::Local<v8::Object> exports ) {
     // Expose the method `Method` to JavaScript, and make sure it receives the
     // per-addon-instance data we created above by passing `external` as the
     // third parameter to the `FunctionTemplate` constructor.
-    SET_NATIVE_METHOD( app, isolate, "generate_pdf", generate_pdf, external, context );
-    SET_NATIVE_METHOD( app, isolate, "get_http_header", get_http_header, external, context );
-    SET_NATIVE_METHOD( app, isolate, "destroy_app", destroy_app, external, context );
-    exports->Set( context, v8_str( isolate, "cpdfy" ), app ).ToChecked( );
+    SET_NATIVE_METHOD( app, isolate, "create_http_request", http_request, external, context );
+    SET_NATIVE_METHOD( app, isolate, "create_smtp_request", smtp_request, external, context );
+    SET_NATIVE_METHOD( app, isolate, "create_http_download_request", http_download_request, external, context );
+    exports->Set( context, v8_str( isolate, "reqw" ), app ).ToChecked( );
 }
 
-NODE_MODULE( cpdfy, Initialize )
+NODE_MODULE( reqw, Initialize )

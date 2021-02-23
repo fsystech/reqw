@@ -12,7 +12,7 @@
 #if !defined(_curl_util_h)
 #	define _curl_util_h
 #	include <curl/curl.h>
-namespace sow_web_jsx {
+namespace sow_curl_util {
 	CURLcode ssl_ctx_callback(CURL* curl, void* ssl_ctx, void* userptr);
 	int debug_log(CURL* handle, curl_infotype type,
 		char* data, size_t size,
