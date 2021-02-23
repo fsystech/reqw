@@ -1,0 +1,6 @@
+**/.vs
+**/node_modules/*
+build/*
+lib/*
+test_output/*
+publish/*
