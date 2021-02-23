@@ -16,7 +16,7 @@ export interface IHttpConfig {
 export interface INativeResult { ret_val: number; ret_msg: string; response_body?: string; response_header?: string }
 export interface reqw_native {
     create_http_request(...args: any[]): INativeResult;
-    create_smtp_request(...args: any[]): INativeResult;
+    create_smtp_request(...args: any[]): string;
     create_http_download_request(...args: any[]): INativeResult;
 }
 interface IHttpResponse {
@@ -52,3 +52,13 @@ export interface HttpRequestConstructor {
     readonly prototype: IHttpRequest;
 }
 declare var HttpRequest: HttpRequestConstructor;
+export declare interface ISmtpRequest {
+
+}
+export interface SmtpRequestConstructor {
+    new(url: string, opt: IHttpConfig): ISmtpRequest;
+    new(url: string): ISmtpRequest;
+    new(): ISmtpRequest;
+    readonly prototype: ISmtpRequest;
+}
+declare var SmtpRequest: SmtpRequestConstructor;
