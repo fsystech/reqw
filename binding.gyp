@@ -65,11 +65,6 @@
                             "<(PRODUCT_DIR)/<(module_name).node",
                         ],
                         "destination": "<(module_path)"
-                    },{
-                        "files": [
-                            "<!(node -e \"console.log('./dependency/linux/%s/curl/lib/libcurl.so.0',require('process').arch);\")"
-                        ],
-                        "destination": "/usr/lib/"
                     }]
                 }],
                 ['OS=="win"', {
