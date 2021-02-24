@@ -46,6 +46,7 @@ interface IHttpResponse {
     dispose(): void;
 }
 export interface IHttpRequest {
+    readonly url: string;
     readonly response: IHttpResponse;
     setUrl(url: string): IHttpRequest;
     getTimeStamp(day?: number): string;
