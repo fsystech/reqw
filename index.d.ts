@@ -19,7 +19,7 @@ export interface INativeResult {
     ret_msg: string;
     response_body?: string;
     response_header?: string
-};
+}
 export interface INativeHttpReqParam {
     method: string;
     cookie?: string;
@@ -30,7 +30,7 @@ export interface INativeHttpReqParam {
     url: string;
     body?: string;
     follow_location: boolean;
-};
+}
 export interface reqw_native {
     create_http_request(opt: INativeHttpReqParam): INativeResult;
     create_smtp_request(...args: any[]): string;
@@ -99,37 +99,37 @@ export interface HttpRequestConstructor {
 }
 declare var HttpRequest: HttpRequestConstructor;
 declare interface IMimeEncoder {
-    binary: "binary";
-    bit: "8bit";
-    base64: "base64";
-    quotedPrintable: "quoted-printable";
+    readonly binary: "binary";
+    readonly bit: "8bit";
+    readonly base64: "base64";
+    readonly quotedPrintable: "quoted-printable";
 }
 declare interface IMailMimeType {
-    text: {
-        plain: "text/plain";
-        html: "text/html";
-        xml: "text/xml";
-        richText: "text/richtext";
+    readonly text: {
+        readonly plain: "text/plain";
+        readonly html: "text/html";
+        readonly xml: "text/xml";
+        readonly richText: "text/richtext";
     };
-    application: {
-        soap: "application/soap+xml";
-        octet: "application/octet-stream";
-        rtf: "application/rtf";
-        pdf: "application/pdf";
-        zip: "application/zip";
-        multi_part: "multipart/mixed";
+    readonly application: {
+        readonly soap: "application/soap+xml";
+        readonly octet: "application/octet-stream";
+        readonly rtf: "application/rtf";
+        readonly pdf: "application/pdf";
+        readonly zip: "application/zip";
+        readonly multi_part: "multipart/mixed";
     };
-    image: {
-        gif: "image/gif";
-        tiff: "image/tiff";
-        jpeg: "image/jpeg";
+    readonly image: {
+        readonly gif: "image/gif";
+        readonly tiff: "image/tiff";
+        readonly jpeg: "image/jpeg";
     };
 }
 declare interface IMailAttachments {
-    name: string;
-    path: string;
-    mim_type: string;
-    encoder: string;
+    readonly name: string;
+    readonly path: string;
+    readonly mim_type: string;
+    readonly encoder: string;
 }
 declare interface ITemplateParser {
     read(path: string): void;

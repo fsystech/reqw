@@ -271,6 +271,10 @@ class TemplateParser {
         this.hasTemplate = false;
         this.read(path);
     }
+    /**
+     * 
+     * @param {string} path 
+     */
     read(path) {
         if (!path)
             throw new Error('Template sould not left blank.');
