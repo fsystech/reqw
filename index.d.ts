@@ -14,19 +14,36 @@ export interface IHttpConfig {
     is_verify_ssl?: boolean;
     is_verify_ssl_host?: boolean;
 }
-export interface INativeResult { ret_val: number; ret_msg: string; response_body?: string; response_header?: string }
+export interface INativeResult {
+    ret_val: number;
+    ret_msg: string;
+    response_body?: string;
+    response_header?: string
+};
+export interface INativeHttpReqParam {
+    method: string;
+    cookie?: string;
+    header?: string[];
+    is_verify_ssl_host: boolean;
+    is_verify_ssl: boolean;
+    is_debug: boolean;
+    url: string;
+    body?: string;
+    follow_location: boolean;
+};
 export interface reqw_native {
-    create_http_request(...args: any[]): INativeResult;
+    create_http_request(opt: INativeHttpReqParam): INativeResult;
     create_smtp_request(...args: any[]): string;
     create_http_download_request(...args: any[]): INativeResult;
 }
 interface IHttpResponse {
-    readonly http_status_code: number;
-    readonly cookie: string[];
-    readonly header: Dict<string>;
-    readonly body: string;
-    readonly is_error: boolean;
+    readonly httpStatusCode?: number;
+    readonly cookie?: string[];
+    readonly header?: Dict<string>;
+    readonly body?: string;
+    readonly is_error?: boolean;
     readonly error?: string;
+    dispose(): void;
 }
 export interface IHttpRequest {
     readonly response: IHttpResponse;
@@ -34,17 +51,44 @@ export interface IHttpRequest {
     getTimeStamp(day?: number): string;
     existsCookie(cook: string): boolean;
     setRawCookie(cook: string): IHttpRequest;
-    setCookie(key: string, value: string): IHttpRequest
+    setCookie(key: string, value: string): IHttpRequest;
+    setRawCookie(cook: string): IHttpRequest;
     removeHeader(key: string): IHttpRequest;
     setHeader(key: string, value: string): IHttpRequest;
     getAsync(follow_location?: boolean): Promise<void>;
-    postAsync(body: string, follow_location?: boolean): Promise<void>;
-    sendAsync(body: string, follow_location?: boolean): Promise<void>;
+    postAsync(body: string | Dict<any>, follow_location?: boolean): Promise<void>;
+    sendAsync(body: string | Dict<any>, follow_location?: boolean): Promise<void>;
     get(follow_location?: boolean): IHttpRequest;
-    post(body: string, follow_location?: boolean): IHttpRequest;
-    send(body: string, follow_location?: boolean): IHttpRequest;
+    post(body: string | Dict<any>, follow_location?: boolean): IHttpRequest;
+    send(body: string | Dict<any>, follow_location?: boolean): IHttpRequest;
     moveToRequest(withHeader?: boolean): IHttpRequest;
     clearResponse(): IHttpRequest;
+}
+export class ClsHttpRequest implements IHttpRequest {
+    public method: string;
+    public cookie: string[];
+    public header: Dict<string>;
+    public is_verify_ssl_host: boolean;
+    public is_verify_ssl: boolean;
+    public is_debug: boolean;
+    public url: string;
+    public response: IHttpResponse;
+    public setUrl(url: string): IHttpRequest;
+    public getTimeStamp(day?: number): string;
+    public existsCookie(cook: string): boolean;
+    public setRawCookie(cook: string): IHttpRequest;
+    public setCookie(key: string, value: string): IHttpRequest;
+    public setRawCookie(cook: string): IHttpRequest;
+    public removeHeader(key: string): IHttpRequest;
+    public setHeader(key: string, value: string): IHttpRequest;
+    public getAsync(follow_location?: boolean): Promise<void>;
+    public postAsync(body: string | Dict<any>, follow_location?: boolean): Promise<void>;
+    public sendAsync(body: string | Dict<any>, follow_location?: boolean): Promise<void>;
+    public get(follow_location?: boolean): IHttpRequest;
+    public post(body: string | Dict<any>, follow_location?: boolean): IHttpRequest;
+    public send(body: string | Dict<any>, follow_location?: boolean): IHttpRequest;
+    public moveToRequest(withHeader?: boolean): IHttpRequest;
+    public clearResponse(): IHttpRequest;
 }
 export interface HttpRequestConstructor {
     new(url: string, opt: IHttpConfig): IHttpRequest;
