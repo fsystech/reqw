@@ -6,7 +6,7 @@ const platform = os.platform();
 const arch = os.arch();
 //if (platform !== 'win32' || arch !== 'ia32') throw new Error(`Not supported platform =>${platform} and arch => ${arch}`);
 console.log(`platform =>${platform} and arch => ${arch}`);
-const { HttpRequest, SMTPRequest, MailMessage } = require('./index');
+const { HttpRequest, SMTPRequest, MailMessage, mimeEncoder, mimeType } = require('./index');
 var http = new HttpRequest("https://www.facebook.com", { is_verify_ssl: false, is_debug: false, is_verify_ssl_host: false });
 http
     .setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
@@ -30,5 +30,14 @@ smtp.host("mail@safeonline.world");
 smtp.credential("rajib@safeonline.world", "123456");
 var msg = new MailMessage();
 msg.from("rajib@safeonline.world").to("ovi@safeonline.world").subject("Hello world").body("Hello world");
+msg
+    .attachment({ name: "my.pdf", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.application.pdf })
+    .attachment({ name: "my.jpg", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.image.jpeg })
+    .attachment({ name: "my.docx", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.application.octet })
+    .attachment({ name: "my.xlsx", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.application.octet })
+    .attachment({ name: "my.xls", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.application.octet })
+    .attachment({ name: "my.doc", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.application.octet })
+    .attachment({ name: "my.gif", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.image.gif })
+    ;
 var result = smtp.sendMail(msg);
 console.log(result);
