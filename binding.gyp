@@ -29,12 +29,12 @@
                         'LINUX_OS',
                     ],
                     'include_dirs': [
-                        "<!(node -e \"console.log('./dependency/linux/%s/curl/include',require('process').arch);\")",
+                        "<!(node -e \"console.log('/usr/include');\")",
                         "<!(node -e \"require('nan')\")"
                     ],
                     "link_settings": {
                         "libraries": [
-                            "<!(node -e \"console.log('../dependency/linux/%s/curl/lib/libcurl.so.0',require('process').arch);\")"
+                            "<!(node -e \"console.log('/usr/lib/aarch%s-linux-gnu/libcurl.so.4',require('process').arch);\")"
                         ]
                     },
                 }],
