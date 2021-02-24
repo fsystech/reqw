@@ -6,8 +6,9 @@
 */
 //By Rajib Chy
 // On 12:25 PM 12/25/2020
-import { ServerResponse } from 'http';
-import { ReadStream, WriteStream } from 'fs';
+declare interface Dict<T> {
+    [key: string]: T | undefined;
+}
 export interface IHttpConfig {
     is_debug?: boolean;
     is_verify_ssl?: boolean;
@@ -22,7 +23,7 @@ export interface reqw_native {
 interface IHttpResponse {
     readonly http_status_code: number;
     readonly cookie: string[];
-    readonly header: NodeJS.Dict<string>;
+    readonly header: Dict<string>;
     readonly body: string;
     readonly is_error: boolean;
     readonly error?: string;
@@ -52,13 +53,88 @@ export interface HttpRequestConstructor {
     readonly prototype: IHttpRequest;
 }
 declare var HttpRequest: HttpRequestConstructor;
-export declare interface ISmtpRequest {
-
+declare interface IMimeEncoder {
+    binary: "binary";
+    bit: "8bit";
+    base64: "base64";
+    quotedPrintable: "quoted-printable";
 }
-export interface SmtpRequestConstructor {
+declare interface IMailMimeType {
+    text: {
+        plain: "text/plain";
+        html: "text/html";
+        xml: "text/xml";
+        richText: "text/richtext";
+    };
+    application: {
+        soap: "application/soap+xml";
+        octet: "application/octet-stream";
+        rtf: "application/rtf";
+        pdf: "application/pdf";
+        zip: "application/zip";
+        multi_part: "multipart/mixed";
+    };
+    image: {
+        gif: "image/gif";
+        tiff: "image/tiff";
+        jpeg: "image/jpeg";
+    };
+}
+declare interface IMailAttachments {
+    name: string;
+    path: string;
+    mim_type: string;
+    encoder: string;
+}
+declare interface ITemplateParser {
+    read(path: string): void;
+    parse(param: any[]): string;
+    getTemplate(): string;
+    clear(): void;
+}
+declare interface TemplateParserConstructor {
+    new(): ITemplateParser;
+    new(path: string): ITemplateParser;
+    readonly prototype: ITemplateParser;
+}
+interface IMailMessage {
+    from(from: string): IMailMessage;
+    to(to: string): IMailMessage;
+    cc(cc: string): IMailMessage;
+    bcc(bcc: string): IMailMessage;
+    subject(subs: string): IMailMessage;
+    body(str: string, isHtml?: boolean): IMailMessage;
+    attachment(opt: IMailAttachments): IMailMessage;
+    attachment(task: 'DEL'): IMailMessage;
+    bodyAsHtml(): IMailMessage;
+    clear(): IMailMessage;
+}
+interface MailMessageConstructor {
+    new(): IMailMessage;
+    new(from: string): IMailMessage;
+    new(from: string, to: string): IMailMessage;
+    new(from: string, to: string, subs: string): IMailMessage;
+    readonly prototype: IMailMessage;
+}
+interface ISmtpRequest {
+    restOption(): ISmtpRequest;
+    debug(): ISmtpRequest;
+    verifySSL(): ISmtpRequest;
+    enableTls(): ISmtpRequest;
+    cert(path: string): ISmtpRequest;
+    host(host: string): ISmtpRequest;
+    dispose(): ISmtpRequest;
+    credential(user: string, pwd: string): ISmtpRequest;
+    sendMail(mailMessage: IMailMessage): { success: boolean; msg: string; };
+}
+interface SmtpRequestConstructor {
     new(url: string, opt: IHttpConfig): ISmtpRequest;
     new(url: string): ISmtpRequest;
     new(): ISmtpRequest;
     readonly prototype: ISmtpRequest;
 }
-declare var SmtpRequest: SmtpRequestConstructor;
+declare var SMTPRequest: SmtpRequestConstructor;
+declare var MailMessage: MailMessageConstructor;
+declare var TemplateParser: TemplateParserConstructor;
+declare var mimeType: IMailMimeType;
+declare var mimeEncoder: IMimeEncoder;

@@ -119,15 +119,6 @@ function clean_resp(rs) {
     for (let p in rs)
         delete rs[p];
 };
-function resolve(deferred, cb) {
-    if (typeof (cb) !== "function") return deferred;
-    deferred.catch((reason) => {
-        cb(-1, reason);
-    }).then((s) => {
-        cb(1, s);
-    }); deferred = undefined;
-    return;
-};
 //8:23 PM 12/2/2018
 //1:02 PM 11/24/2019
 //With Rajib & Ovi

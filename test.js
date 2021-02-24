@@ -6,7 +6,7 @@ const platform = os.platform();
 const arch = os.arch();
 //if (platform !== 'win32' || arch !== 'ia32') throw new Error(`Not supported platform =>${platform} and arch => ${arch}`);
 console.log(`platform =>${platform} and arch => ${arch}`);
-const { HttpRequest } = require('./index');
+const { HttpRequest, SMTPRequest, MailMessage } = require('./index');
 var http = new HttpRequest("http://erp.kslbd.net/", { is_verify_ssl: false, is_debug: false, is_verify_ssl_host: false });
 http
     .setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
@@ -15,5 +15,12 @@ http
     .setHeader("Content-Type", "application/x-www-form-urlencoded")
     .setHeader("Accept-Encoding", "gzip")
     .setHeader("Upgrade-Insecure-Requests", "1")
-http.get(true);
+//http.get(true);
 console.log(http.response);
+var smtp = new SMTPRequest();
+smtp.host("mail@safeonline.world");
+smtp.credential("rajib@safeonline.world", "123456");
+var msg = new MailMessage();
+msg.from("rajib@safeonline.world").to("ovi@safeonline.world").subject("Hello world").body("Hello world");
+var result = smtp.sendMail(msg);
+console.log(result);

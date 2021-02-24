@@ -5,6 +5,7 @@
 * See the accompanying LICENSE file for terms.
 */
 //11:08 PM 11/25/2019
+// @ts-check
 /**
  * @param {any[]} args
  * @returns {string}
@@ -111,7 +112,8 @@ class MailMessage {
         if (this.opt.body)
             delete this.opt.body;
         ensure_value(str, "Mail body");
-        return this.opt.body = str.replace(/\n/gi, "").replace(/\\t/gi, " ").replace(/\s+/gi, " ").trim(), this.opt.is_html = isHtml;
+        this.opt.body = str.replace(/\n/gi, "").replace(/\\t/gi, " ").replace(/\s+/gi, " ").trim(), this.opt.is_html = isHtml;
+        return this;
     }
     from(from) {
         if (from === "DEL") {
@@ -188,16 +190,14 @@ class MailMessage {
         return object_copy({}, this.opt);
     }
 }
-class Smtp {
+class SMTPRequest {
     constructor(host, user, pwd) {
         this.restOption();
-        ensure_value(host, "host");
-        ensure_value(user, "user");
-        ensure_value(pwd, "pwd");
         this.opt.host = host;
         this.opt.user = user;
         this.opt.password = pwd;
-        this.opt.mail_domain = get_domain(host);
+        if (host)
+            this.opt.mail_domain = get_domain(host);
     }
     restOption() {
         if (this.opt) delete this.opt;
@@ -274,7 +274,8 @@ class TemplateParser {
     read(path) {
         if (!path)
             throw new Error('Template sould not left blank.');
-        let rs = fs.read_file(path);
+        //@ts-ignore
+        let rs = fs.read_file(path);// TODO
         if (rs.staus_code < 0)
             throw new Error(rs.message);
         this.str = rs.data.replace(/\n/gi, "").replace(/\\t/gi, " ").replace(/\s+/gi, " ").trim();
@@ -313,11 +314,11 @@ class TemplateParser {
     }
 }
 module.exports = {
-    Smtp: Smtp,
+    SMTPRequest: SMTPRequest,
     MailMessage: MailMessage,
     TemplateParser: TemplateParser,
-    mime_type: mime_type_names,
-    mime_encoder: mime_encoder,
+    mimeType: mime_type_names,
+    mimeEncoder: mime_encoder,
     nativeInit: function (func) {
         create_smtp_request = func;
     }
