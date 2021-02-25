@@ -142,7 +142,7 @@ function parseHttpResponse(resp) {
             response.cookie.push(trim(cok)); continue;
         }
         let harr = row.split(":");
-        let key = harr[0];//.toLowerCase();
+        let key = harr[0].toLowerCase();
         response.header[trim(key)] = trim(harr[1]);
     }
     cleanResponse(resp);
