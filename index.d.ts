@@ -39,7 +39,7 @@ export declare interface reqw_native {
 }
 interface IHttpResponse {
     readonly httpStatusCode?: number;
-    readonly cookie?: string[];
+    readonly cookies?: string[];
     readonly header?: IncomingHttpHeaders;//Dict<string>;
     readonly body?: string;
     readonly is_error?: boolean;
@@ -54,6 +54,8 @@ export declare interface IHttpRequest {
     getTimeStamp(day?: number): string;
     existsCookie(cook: string): boolean;
     setRawCookie(cook: string): IHttpRequest;
+    clearCookies(): IHttpRequest;
+    setCookie(key: string[]): IHttpRequest;
     setCookie(key: string, value: string): IHttpRequest;
     setRawCookie(cook: string): IHttpRequest;
     removeHeader(key: string): IHttpRequest;
@@ -70,7 +72,7 @@ export declare interface IHttpRequest {
 }
 export class ClsHttpRequest implements IHttpRequest {
     public method: string;
-    public cookie: string[];
+    public cookies: string[];
     public headers: OutgoingHttpHeaders;
     public is_verify_ssl_host: boolean;
     public is_verify_ssl: boolean;
@@ -81,6 +83,7 @@ export class ClsHttpRequest implements IHttpRequest {
     public getTimeStamp(day?: number): string;
     public existsCookie(cook: string): boolean;
     public setRawCookie(cook: string): IHttpRequest;
+    public clearCookies(): IHttpRequest;
     public setCookie(key: string, value: string): IHttpRequest;
     public setRawCookie(cook: string): IHttpRequest;
     public removeHeader(key: string): IHttpRequest;

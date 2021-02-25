@@ -78,8 +78,8 @@ function CreateHttpRequest(req, body, follow_location) {
         for (let key in req.headers)
             reqParam.header.push(`${key}:${req.headers[key]}`);
     }
-    if (req.cookie && req.cookie.length > 0) {
-        reqParam.cookie = req.cookie.join(";");
+    if (req.cookies && req.cookies.length > 0) {
+        reqParam.cookie = req.cookies.join(";");
     }
     const res = create_http_request(reqParam);
     cleanObject(reqParam);
@@ -89,7 +89,7 @@ class HttpResponse {
     constructor() {
         this.isDisposed = false;
         this.httpStatusCode = 0;
-        this.cookie = [];
+        this.cookies = [];
         this.header = {};
         this.body = undefined;
         this.is_error = false;
@@ -99,7 +99,7 @@ class HttpResponse {
         if (this.isDisposed) return;
         this.isDisposed = true;
         delete this.httpStatusCode;
-        delete this.cookie;
+        delete this.cookies;
         delete this.header;
         delete this.body;
         delete this.is_error;
@@ -146,7 +146,7 @@ function parseHttpResponse(resp) {
             let cok = row.split(":")[1];
             if (!cok) continue;
             cok = cok.split(";")[0];
-            response.cookie.push(trim(cok)); continue;
+            response.cookies.push(trim(cok)); continue;
         }
         let harr = row.split(":");
         let key = harr[0].toLowerCase();
@@ -205,7 +205,7 @@ class HttpRequest {
         extend(this, opt);
         this.response = undefined;
         this.method = void 0;
-        this.cookie = [];
+        this.cookies = [];
         this.headers = {};
         this.is_debug = false;
         this.is_verify_ssl = false;
@@ -225,16 +225,28 @@ class HttpRequest {
      * @returns {boolean}
      */
     existsCookie(cook) {
-        return this.cookie.indexOf(cook) >= 0;
+        return this.cookies.indexOf(cook) >= 0;
     }
     /**
      * 
-     * @param {string} key 
-     * @param {string} value
+     * @param {string|string[]} key 
+     * @param {string|void} value
      * @returns {IHttpRequest} 
      */
     setCookie(key, value) {
+        if (Array.isArray(key)) {
+            for (let kv in key) {
+                this.setRawCookie(kv);
+            }
+            return this;
+        }
         return this.setRawCookie(`${key}=${value}`);
+    }
+    clearCookies() {
+        if (Array.isArray(this.cookies)) {
+            this.cookies.length = 0;
+        }
+        return this;
     }
     /**
      * 
@@ -243,7 +255,7 @@ class HttpRequest {
      */
     setRawCookie(cook) {
         if (this.existsCookie(cook)) return this;
-        this.cookie.push(cook);
+        this.cookies.push(cook);
         return this;
     }
     /**
@@ -343,9 +355,9 @@ class HttpRequest {
      */
     moveToRequest(withHeader) {
         if ('number' === typeof (this.response.httpStatusCode) && this.response.httpStatusCode > 0) {
-            this.cookie = [];
-            for (let part; this.response.cookie.length && (part = this.response.cookie.shift());) {
-                this.cookie.push(part);
+            this.cookies = [];
+            for (let part; this.response.cookies.length && (part = this.response.cookies.shift());) {
+                this.cookies.push(part);
             }
         }
         if (!withHeader)
@@ -383,9 +395,9 @@ class HttpRequest {
         if (this.headers) {
             delete this.headers;
         }
-        if (this.cookie) {
-            this.cookie.length = 0;
-            delete this.cookie;
+        if (this.cookies) {
+            this.cookies.length = 0;
+            delete this.cookies;
         }
     }
 };

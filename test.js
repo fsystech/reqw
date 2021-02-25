@@ -21,7 +21,7 @@ var end = new Date();
 console.log(http.response.header);
 console.log(http.headers);
 console.log(http.response.httpStatusCode);
-console.log(http.response.cookie);
+console.log(http.response.cookies);
 console.log(`Start: ${start.toString()}`);
 console.log(`End: ${end.toString()}`);
 console.log(`Take: ${end.getTime() - start.getTime()}ms`);
@@ -41,8 +41,8 @@ msg.from("rajib@safeonline.world").to("ovi@safeonline.world").subject("Hello wor
 //     .attachment({ name: "my.gif", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.image.gif })
 //     ;
 try {
-    // var result = smtp.sendMail(msg);
-    // console.log(result);
+    var result = smtp.sendMail(msg);
+    console.log(result);
 } catch (e) {
     console.log(e);
 }
