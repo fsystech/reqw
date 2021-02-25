@@ -100,6 +100,15 @@ class HttpResponse {
     }
 }
 /**
+ * 
+ * @param {string|void} str
+ * @returns {string}
+ */
+function trim(str) {
+    if (!str) return undefined;
+    return str.trim();
+}
+/**
  * @param {INativeResult} resp
  * @returns {IHttpResponse}
  */
@@ -130,11 +139,11 @@ function parseHttpResponse(resp) {
             let cok = row.split(":")[1];
             if (!cok) continue;
             cok = cok.split(";")[0];
-            response.cookie.push(cok); continue;
+            response.cookie.push(trim(cok)); continue;
         }
         let harr = row.split(":");
-        let key = harr[0].replace(/-/g, "_").toLowerCase();
-        response.header[key] = harr[1];
+        let key = harr[0];//.toLowerCase();
+        response.header[trim(key)] = trim(harr[1]);
     }
     cleanResponse(resp);
     return response;
@@ -142,7 +151,7 @@ function parseHttpResponse(resp) {
 /**
  * 
  * @param {ClsHttpRequest} req
- * @param {string|NodeJS.Dict<any>} body
+ * @param {string|{[id:string]:any}} body
  * @returns {string}
  */
 function preparePostData(req, body) {
@@ -264,7 +273,7 @@ class HttpRequest {
     }
     /**
      * 
-     * @param {string|NodeJS.Dict<any>} body 
+     * @param {string|{[id:string]:any}} body 
      * @param {boolean|void} follow_location
      * @returns {Promise<void>}  
      */
@@ -276,7 +285,7 @@ class HttpRequest {
     }
     /**
      * 
-     * @param {string|NodeJS.Dict<any>} body 
+     * @param {string|{[id:string]:any} body 
      * @param {boolean|void} follow_location
      * @returns {Promise<void>}  
      */
@@ -297,7 +306,7 @@ class HttpRequest {
         return this;
     }
     /**
-     * @param {string|NodeJS.Dict<any>} body
+     * @param {string|{[id:string]:any}} body
      * @param {boolean|void} follow_location
      * @returns {IHttpRequest}
      */
@@ -309,7 +318,7 @@ class HttpRequest {
         return this;
     }
     /**
-     * @param {string|NodeJS.Dict<any>} body
+     * @param {string|{[id:string]:any}} body
      * @param {boolean|void} follow_location
      * @returns {IHttpRequest}
      */

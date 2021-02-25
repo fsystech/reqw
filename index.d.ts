@@ -6,6 +6,7 @@
 */
 //By Rajib Chy
 // On 12:25 PM 12/25/2020
+import { IncomingHttpHeaders } from 'http';
 declare interface Dict<T> {
     [key: string]: T | undefined;
 }
@@ -39,7 +40,7 @@ export interface reqw_native {
 interface IHttpResponse {
     readonly httpStatusCode?: number;
     readonly cookie?: string[];
-    readonly header?: Dict<string>;
+    readonly header?: IncomingHttpHeaders;//Dict<string>;
     readonly body?: string;
     readonly is_error?: boolean;
     readonly error?: string;
