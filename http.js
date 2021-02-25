@@ -36,11 +36,16 @@ var create_http_request = function (opt) { return undefined; };
 function addHours(date, h) {
     date.setHours(date.getHours() + h);
     return date;
-};
-function cleanResponse(rs) {
+}
+/**
+ * Clear `Object Properties`
+ * @param {any} rs 
+ */
+function cleanObject(rs) {
+    if (!rs || rs === null || typeof (rs) !== "object") return;
     for (let p in rs)
         delete rs[p];
-};
+}
 /**
  * @param {ClsHttpRequest} req
  * @param {string} body 
@@ -76,7 +81,9 @@ function CreateHttpRequest(req, body, follow_location) {
     if (req.cookie && req.cookie.length > 0) {
         reqParam.cookie = req.cookie.join(";");
     }
-    return create_http_request(reqParam);
+    const res = create_http_request(reqParam);
+    cleanObject(reqParam);
+    return res;
 };
 class HttpResponse {
     constructor() {
@@ -117,13 +124,13 @@ function parseHttpResponse(resp) {
     if (resp.ret_val < 0) {
         response.is_error = true;
         response.error = resp.ret_msg;
-        cleanResponse(resp);
+        cleanObject(resp);
         return response;
     }
     response.body = resp.response_body; delete resp.response_body;
     if (!resp.response_header && "string" !== typeof (resp.response_header)) {
         delete resp.response_header;
-        cleanResponse(resp);
+        cleanObject(resp);
         return response;
     }
     let arr = resp.response_header.split("\r\n");
@@ -145,7 +152,7 @@ function parseHttpResponse(resp) {
         let key = harr[0].toLowerCase();
         response.header[trim(key)] = trim(harr[1]);
     }
-    cleanResponse(resp);
+    cleanObject(resp);
     return response;
 };
 /**
@@ -314,7 +321,7 @@ class HttpRequest {
         this.method = "POST";
         let resp = CreateHttpRequest(this, preparePostData(this, body), follow_location); body = void 0;
         this.response = parseHttpResponse(resp);
-        cleanResponse(resp);
+        cleanObject(resp);
         return this;
     }
     /**
@@ -326,7 +333,7 @@ class HttpRequest {
         this.method = "POST";
         let resp = CreateHttpRequest(this, preparePostData(this, body), follow_location); body = void 0;
         this.response = parseHttpResponse(resp);
-        cleanResponse(resp);
+        cleanObject(resp);
         return this;
     }
     /**
