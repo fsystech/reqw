@@ -359,15 +359,27 @@ class HttpRequest {
      * @returns {IHttpRequest}
      */
     clearResponse() {
-        if (this.response || this.url) {
+        if (this.response) {
             this.response.dispose();
             delete this.response;
-            this.url = undefined;
-            this.method = undefined;
-            this.header = {};
-            this.cookie = [];
+        }
+        if (this.method) {
+            delete this.method;
+        }
+        if (this.url) {
+            delete this.url;
         }
         return this;
+    }
+    dispose() {
+        this.clearResponse();
+        if (this.header) {
+            delete this.header;
+        }
+        if (this.cookie) {
+            this.cookie.length = 0;
+            delete this.cookie;
+        }
     }
 };
 module.exports.HttpRequest = HttpRequest;

@@ -24,7 +24,7 @@ console.log(http.response.cookie);
 console.log(`Start: ${start.toString()}`);
 console.log(`End: ${end.toString()}`);
 console.log(`Take: ${end.getTime() - start.getTime()}ms`);
-http.clearResponse();
+http.dispose();
 var smtp = new SMTPRequest();
 smtp.host("mail@safeonline.world");
 smtp.credential("rajib@safeonline.world", "123456");

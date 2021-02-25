@@ -65,6 +65,7 @@ export declare interface IHttpRequest {
     send(body: string | Dict<any>, follow_location?: boolean): IHttpRequest;
     moveToRequest(withHeader?: boolean): IHttpRequest;
     clearResponse(): IHttpRequest;
+    dispose(): void;
 }
 export class ClsHttpRequest implements IHttpRequest {
     public method: string;
@@ -91,6 +92,7 @@ export class ClsHttpRequest implements IHttpRequest {
     public send(body: string | Dict<any>, follow_location?: boolean): IHttpRequest;
     public moveToRequest(withHeader?: boolean): IHttpRequest;
     public clearResponse(): IHttpRequest;
+    public dispose(): void;
 }
 export declare interface HttpRequestConstructor {
     new(url: string, opt: IHttpConfig): IHttpRequest;
