@@ -70,8 +70,8 @@ function CreateHttpRequest(req, body, follow_location) {
     }
     if (Object.keys(req.header).length > 0) {
         reqParam.header = [];
-        for (let key in this.header)
-            reqParam.header.push(`${key}:${this.header[key]}`);
+        for (let key in req.header)
+            reqParam.header.push(`${key}:${req.header[key]}`);
     }
     if (req.cookie && req.cookie.length > 0) {
         reqParam.cookie = req.cookie.join(";");
@@ -285,7 +285,7 @@ class HttpRequest {
     }
     /**
      * 
-     * @param {string|{[id:string]:any} body 
+     * @param {string|{[id:string]:any}} body 
      * @param {boolean|void} follow_location
      * @returns {Promise<void>}  
      */
