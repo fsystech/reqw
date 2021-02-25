@@ -73,10 +73,10 @@ function CreateHttpRequest(req, body, follow_location) {
             throw new Error("POST paylod data typeof(string) required !!!");
         reqParam.body = body; body = undefined;
     }
-    if (Object.keys(req.header).length > 0) {
+    if (Object.keys(req.headers).length > 0) {
         reqParam.header = [];
-        for (let key in req.header)
-            reqParam.header.push(`${key}:${req.header[key]}`);
+        for (let key in req.headers)
+            reqParam.header.push(`${key}:${req.headers[key]}`);
     }
     if (req.cookie && req.cookie.length > 0) {
         reqParam.cookie = req.cookie.join(";");
@@ -206,7 +206,7 @@ class HttpRequest {
         this.response = undefined;
         this.method = void 0;
         this.cookie = [];
-        this.header = {};
+        this.headers = {};
         this.is_debug = false;
         this.is_verify_ssl = false;
         this.is_verify_ssl_host = false;
@@ -252,8 +252,8 @@ class HttpRequest {
      * @returns {IHttpRequest}
      */
     removeHeader(key) {
-        if (this.header[key])
-            delete this.header[key];
+        if (this.headers[key])
+            delete this.headers[key];
         return this;
     }
     /**
@@ -264,7 +264,7 @@ class HttpRequest {
      */
     setHeader(key, value) {
         this.removeHeader(key);
-        this.header[key] = value;
+        this.headers[key] = value;
         return this;
     }
     /**
@@ -349,7 +349,7 @@ class HttpRequest {
             }
         }
         if (!withHeader)
-            this.header = {};
+            this.headers = {};
         return this;
     }
     /**
@@ -380,8 +380,8 @@ class HttpRequest {
     }
     dispose() {
         this.clearResponse();
-        if (this.header) {
-            delete this.header;
+        if (this.headers) {
+            delete this.headers;
         }
         if (this.cookie) {
             this.cookie.length = 0;

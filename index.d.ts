@@ -49,6 +49,7 @@ interface IHttpResponse {
 export declare interface IHttpRequest {
     readonly url: string;
     readonly response: IHttpResponse;
+    readonly headers: OutgoingHttpHeaders;
     setUrl(url: string): IHttpRequest;
     getTimeStamp(day?: number): string;
     existsCookie(cook: string): boolean;
@@ -70,7 +71,7 @@ export declare interface IHttpRequest {
 export class ClsHttpRequest implements IHttpRequest {
     public method: string;
     public cookie: string[];
-    public header: OutgoingHttpHeaders;
+    public headers: OutgoingHttpHeaders;
     public is_verify_ssl_host: boolean;
     public is_verify_ssl: boolean;
     public is_debug: boolean;
