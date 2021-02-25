@@ -21,7 +21,7 @@ export interface INativeResult {
     response_body?: string;
     response_header?: string
 }
-export interface INativeHttpReqParam {
+export declare interface INativeHttpReqParam {
     method: string;
     cookie?: string;
     header?: string[];
@@ -32,7 +32,7 @@ export interface INativeHttpReqParam {
     body?: string;
     follow_location: boolean;
 }
-export interface reqw_native {
+export declare interface reqw_native {
     create_http_request(opt: INativeHttpReqParam): INativeResult;
     create_smtp_request(...args: any[]): string;
     create_http_download_request(...args: any[]): INativeResult;
@@ -46,7 +46,7 @@ interface IHttpResponse {
     readonly error?: string;
     dispose(): void;
 }
-export interface IHttpRequest {
+export declare interface IHttpRequest {
     readonly url: string;
     readonly response: IHttpResponse;
     setUrl(url: string): IHttpRequest;
@@ -92,7 +92,7 @@ export class ClsHttpRequest implements IHttpRequest {
     public moveToRequest(withHeader?: boolean): IHttpRequest;
     public clearResponse(): IHttpRequest;
 }
-export interface HttpRequestConstructor {
+export declare interface HttpRequestConstructor {
     new(url: string, opt: IHttpConfig): IHttpRequest;
     new(url: string): IHttpRequest;
     new(): IHttpRequest;
@@ -143,7 +143,7 @@ declare interface TemplateParserConstructor {
     new(path: string): ITemplateParser;
     readonly prototype: ITemplateParser;
 }
-interface IMailMessage {
+declare interface IMailMessage {
     from(from: string): IMailMessage;
     to(to: string): IMailMessage;
     cc(cc: string): IMailMessage;
@@ -155,14 +155,14 @@ interface IMailMessage {
     bodyAsHtml(): IMailMessage;
     clear(): IMailMessage;
 }
-interface MailMessageConstructor {
+declare interface MailMessageConstructor {
     new(): IMailMessage;
     new(from: string): IMailMessage;
     new(from: string, to: string): IMailMessage;
     new(from: string, to: string, subs: string): IMailMessage;
     readonly prototype: IMailMessage;
 }
-interface ISmtpRequest {
+declare interface ISmtpRequest {
     restOption(): ISmtpRequest;
     debug(): ISmtpRequest;
     verifySSL(): ISmtpRequest;
