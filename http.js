@@ -173,7 +173,7 @@ function preparePostData(req, body) {
     for (let p in body) {
         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(body[p]));
     }
-    let data = str.join("&");
+    let data = str.join("&"); str.length = 0; str = undefined;
     req.setHeader("Content-Length", String(data.length));
     return data;
 
@@ -202,7 +202,6 @@ class HttpRequest {
                 is_verify_ssl_host: false
             };
         }
-        extend(this, opt);
         this.response = undefined;
         this.method = void 0;
         this.cookies = [];
@@ -210,6 +209,7 @@ class HttpRequest {
         this.is_debug = false;
         this.is_verify_ssl = false;
         this.is_verify_ssl_host = false;
+        extend(this, opt);
     }
     /**
      * 
@@ -235,7 +235,7 @@ class HttpRequest {
      */
     setCookie(key, value) {
         if (Array.isArray(key)) {
-            for (let kv in key) {
+            for (let kv of key) {
                 this.setRawCookie(kv);
             }
             return this;
