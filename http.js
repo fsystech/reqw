@@ -64,7 +64,7 @@ function CreateHttpRequest(req, body, follow_location) {
         is_debug: req.is_debug,
         is_verify_ssl: req.is_verify_ssl,
         is_verify_ssl_host: req.is_verify_ssl_host,
-        follow_location: typeof (follow_location) !== "boolean" ? true : follow_location
+        follow_location: typeof (follow_location) !== "boolean" ? false : follow_location
     };
     if (req.method === "POST") {
         if (body === undefined || body === null)
