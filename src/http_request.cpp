@@ -43,8 +43,8 @@ void http_request::prepare( ) {
 	}
 	curl_easy_setopt( _curl, CURLOPT_WRITEFUNCTION, write_callback );
 	curl_easy_setopt( _curl, CURLOPT_URL, _full_url );
-	/* complete within 20 seconds */
-	curl_easy_setopt( _curl, CURLOPT_TIMEOUT, 120L );
+	/* complete within 2 Min 30 Sec*/
+	curl_easy_setopt( _curl, CURLOPT_TIMEOUT, 150L );
 	curl_easy_setopt( _curl, CURLOPT_HTTP_CONTENT_DECODING, 1L );
 	curl_easy_setopt( _curl, CURLOPT_ACCEPT_ENCODING, "gzip" );
 }

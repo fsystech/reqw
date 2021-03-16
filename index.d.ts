@@ -84,6 +84,7 @@ export class ClsHttpRequest implements IHttpRequest {
     public existsCookie(cook: string): boolean;
     public setRawCookie(cook: string): IHttpRequest;
     public clearCookies(): IHttpRequest;
+    public setCookie(key: string[]): IHttpRequest;
     public setCookie(key: string, value: string): IHttpRequest;
     public setRawCookie(cook: string): IHttpRequest;
     public removeHeader(key: string): IHttpRequest;

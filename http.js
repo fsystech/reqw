@@ -321,7 +321,16 @@ class HttpRequest {
      */
     get(follow_location) {
         this.method = "GET";
-        this.response = parseHttpResponse(CreateHttpRequest(this, void 0, follow_location));
+        try {
+            let resp = CreateHttpRequest(this, void 0, follow_location);
+            this.response = parseHttpResponse(resp);
+            cleanObject(resp);
+        } catch (e) {
+            var response = new HttpResponse();
+            response.is_error = true;
+            response.error = e.message;
+            this.response = response;
+        }
         return this;
     }
     /**
@@ -331,9 +340,16 @@ class HttpRequest {
      */
     post(body, follow_location) {
         this.method = "POST";
-        let resp = CreateHttpRequest(this, preparePostData(this, body), follow_location); body = void 0;
-        this.response = parseHttpResponse(resp);
-        cleanObject(resp);
+        try {
+            let resp = CreateHttpRequest(this, preparePostData(this, body), follow_location); body = void 0;
+            this.response = parseHttpResponse(resp);
+            cleanObject(resp);
+        } catch (e) {
+            var response = new HttpResponse();
+            response.is_error = true;
+            response.error = e.message;
+            this.response = response;
+        }
         return this;
     }
     /**
