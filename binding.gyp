@@ -71,7 +71,9 @@
                     "copies": [{
                         "files": [
                             "<(PRODUCT_DIR)/<(module_name).node",
-                            "<!(node -e \"console.log('./dependency/win/%s/curl/bin/libcurl.dll', require('process').arch);\")"
+                            "<!(node -e \"console.log('./dependency/win/%s/curl/bin/libcurl.dll', require('process').arch);\")",
+                            "<!(node -e \"console.log('./dependency/win/%s/openSSL/bin/libssl-1_1-x64.dll', require('process').arch);\")",
+                            "<!(node -e \"console.log('./dependency/win/%s/openSSL/bin/libcrypto-1_1-x64.dll', require('process').arch);\")"
                         ],
                         "destination": "<(module_path)"
                     }]
