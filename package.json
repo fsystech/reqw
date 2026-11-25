@@ -5,15 +5,15 @@
   "main": "index.js",
   "types": "index.d.ts",
   "author": {
-    "name": "Safe Online World Ltd.",
-    "email": "safeonlineworld@gmail.com",
-    "url": "https://github.com/safeonlineworld/reqw/issues"
+    "name": "FSys Tech Ltd.",
+    "email": "contact@fsys.tech",
+    "url": "https://github.com/fsystech/reqw/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/safeonlineworld/reqw.git"
+    "url": "git://github.com/fsystech/reqw.git"
   },
-  "homepage": "https://github.com/safeonlineworld/reqw#readme",
+  "homepage": "https://github.com/fsystech/reqw#readme",
   "license": "CC-BY-4.0",
   "scripts": {
     "install": "node-pre-gyp install --build-from-source",
@@ -38,7 +38,7 @@
     "module_path": "./lib/binding/{configuration}/{node_abi}-{platform}-{arch}/",
     "remote_path": "./{module_name}/v{version}/{configuration}/",
     "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
-    "host": "https://github.com/safeonlineworld/"
+    "host": "https://github.com/fsystech/"
   },
   "devDependencies": {},
   "bundledDependencies": [
