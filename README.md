@@ -40,7 +40,7 @@ var smtp = new SMTPRequest();
 smtp.host("mail@safeonline.world");
 smtp.credential("rajib@safeonline.world", "123456");
 var msg = new MailMessage();
-msg.from("rajib@safeonline.world").to("ovi@safeonline.world").subject("Hello world").body("Hello world");
+msg.from("rajib@fsys.tech").to("ovi@fsys.tech").subject("Hello world").body("Hello world");
 msg
 .attachment({ name: "my.pdf", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.application.pdf })
 .attachment({ name: "my.jpg", path: "", encoder: mimeEncoder.binary, mim_type: mimeType.image.jpeg })
